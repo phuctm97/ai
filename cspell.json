@@ -5,7 +5,8 @@
     ".git",
     ".vscode/extensions.json",
     ".vscode/settings.json",
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "apps/mobile/ios"
   ],
   "words": [
     "apigatewayv2",
@@ -22,6 +23,7 @@
     "nocheck",
     "openai",
     "openapi",
+    "phuctm",
     "presigner",
     "roadmap",
     "scroller",

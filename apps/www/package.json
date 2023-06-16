@@ -1,6 +1,9 @@
 {
   "name": "www",
   "private": true,
+  "scripts": {
+    "build-for-mobile": "NEXT_TARGET=mobile next build"
+  },
   "dependencies": {
     "ai": "^2.0.1",
     "client-only": "^0.0.1",

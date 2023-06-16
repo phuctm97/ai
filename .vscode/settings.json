@@ -18,6 +18,8 @@
     "**/*.tsbuildinfo": true,
     "**/.next": true,
     "**/next-env.d.ts": true,
-    "**/out": true
+    "**/out": true,
+    "**/out-for-mobile": true,
+    "apps/mobile/ios": true
   }
 }

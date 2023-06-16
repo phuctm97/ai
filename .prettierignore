@@ -3,6 +3,7 @@
 .next
 next-env.d.ts
 out
+out-for-mobile
 
 # env
 .env*
