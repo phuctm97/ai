@@ -1,0 +1,9 @@
+# apps
+.next
+next-env.d.ts
+out
+
+# scripts
+.*.js
+*.build.js
+*.config.js

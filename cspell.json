@@ -1,0 +1,33 @@
+{
+  "enableGlobDot": true,
+  "useGitignore": true,
+  "ignorePaths": [
+    ".git",
+    ".vscode/extensions.json",
+    ".vscode/settings.json",
+    "pnpm-lock.yaml"
+  ],
+  "words": [
+    "apigatewayv2",
+    "authed",
+    "awskms",
+    "certificatemanager",
+    "chatgpt",
+    "clsx",
+    "codemirror",
+    "fullname",
+    "identitypool",
+    "inconsolata",
+    "localforage",
+    "nocheck",
+    "openai",
+    "openapi",
+    "presigner",
+    "roadmap",
+    "scroller",
+    "tailwindcss",
+    "tsbuildinfo",
+    "unoptimized",
+    "workdir"
+  ]
+}

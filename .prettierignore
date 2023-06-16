@@ -1,0 +1,12 @@
+# apps
+*.tsbuildinfo
+.next
+next-env.d.ts
+out
+
+# env
+.env*
+
+# misc
+.DS_Store
+*.pem

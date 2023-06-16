@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "lib": ["dom", "dom.iterable", "es2023"],
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true
+  },
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx"],
+  "exclude": ["node_modules", "out"]
+}
