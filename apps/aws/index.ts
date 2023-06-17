@@ -1,7 +1,9 @@
 import type { AppProps, StackProps } from "aws-cdk-lib";
 
 import { App, Stack } from "aws-cdk-lib";
+import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as customResources from "aws-cdk-lib/custom-resources";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as path from "path";
@@ -11,6 +13,78 @@ import * as addons from "./addons";
 class MyStack extends Stack {
   constructor(app: App, id: string, props?: StackProps) {
     super(app, id, props);
+
+    const userPool = new cognito.UserPool(this, "UserPool", {
+      selfSignUpEnabled: false,
+      signInAliases: { username: true, preferredUsername: true, email: true },
+      signInCaseSensitive: false,
+      accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
+    });
+
+    const userPoolClient = userPool.addClient("Client", {
+      authFlows: { userSrp: true },
+      readAttributes: new cognito.ClientAttributes().withStandardAttributes({
+        email: true,
+        emailVerified: true,
+        fullname: true,
+      }),
+      writeAttributes: new cognito.ClientAttributes().withStandardAttributes({
+        fullname: true,
+      }),
+    });
+
+    const identityPool = new addons.cognito.IdentityPool(this, "IdentityPool", {
+      allowUnauthenticatedIdentities: true,
+      authenticationProviders: {
+        userPools: [
+          new addons.cognito.UserPoolAuthenticationProvider({
+            userPool,
+            userPoolClient,
+          }),
+        ],
+      },
+    });
+
+    // Grant Cognito user's direct access to AWS resources.
+    // • How to enable/customize Cognito attributes for access controls:https://docs.aws.amazon.com/cognito/latest/developerguide/using-afac-with-cognito-identity-pools.html
+    // • How to use Cognito attributes for access controls: https://docs.aws.amazon.com/cognito/latest/developerguide/using-attributes-for-access-control-policy-example.html
+    // • Default mappings of Cognito attributes to session tags: https://docs.aws.amazon.com/cognito/latest/developerguide/provider-mappings.html
+    // • How STS session tags work: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_session-tags.html
+    const setIdentityPoolPrincipalTagAttributeMap: customResources.AwsSdkCall =
+      {
+        service: "CognitoIdentity",
+        action: "setPrincipalTagAttributeMap",
+        parameters: {
+          IdentityPoolId: identityPool.identityPoolId,
+          IdentityProviderName: userPool.userPoolProviderName,
+          PrincipalTags: { cognito_username: "cognito:username" },
+          UseDefaults: false,
+        },
+        physicalResourceId: customResources.PhysicalResourceId.of(
+          identityPool.identityPoolId
+        ),
+      };
+    const deleteIdentityPoolPrincipalTagAttributeMap: customResources.AwsSdkCall =
+      {
+        service: "CognitoIdentity",
+        action: "setPrincipalTagAttributeMap",
+        parameters: {
+          IdentityPoolId: identityPool.identityPoolId,
+          IdentityProviderName: userPool.userPoolProviderName,
+          PrincipalTags: {},
+          UseDefaults: false,
+        },
+      };
+
+    new customResources.AwsCustomResource(this, "IdentityPoolPrincipalTags", {
+      onCreate: setIdentityPoolPrincipalTagAttributeMap,
+      onUpdate: setIdentityPoolPrincipalTagAttributeMap,
+      onDelete: deleteIdentityPoolPrincipalTagAttributeMap,
+      policy: customResources.AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [identityPool.identityPoolArn],
+      }),
+      installLatestAwsSdk: false,
+    });
 
     addons.cfn.destroyOnRemoval(
       ...this.node.children.filter(

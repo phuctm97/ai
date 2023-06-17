@@ -19,6 +19,7 @@
     "fullname",
     "identitypool",
     "inconsolata",
+    "jwks",
     "localforage",
     "nocheck",
     "openai",

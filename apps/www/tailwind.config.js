@@ -1,1 +1,6 @@
-module.exports = require("workspace/tailwind.build")("app", "dynamic", "misc");
+module.exports = require("workspace/tailwind.build")(
+  "app",
+  "auth",
+  "dynamic",
+  "misc"
+);
