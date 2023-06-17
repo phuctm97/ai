@@ -2,7 +2,7 @@
   "name": "mobile",
   "private": true,
   "scripts": {
-    "build": "pnpm --filter www build-for-mobile && pnpm cap sync"
+    "build": "pnpm --filter web build-for-mobile && pnpm cap sync"
   },
   "dependencies": {
     "@capacitor/core": "^5.0.5",

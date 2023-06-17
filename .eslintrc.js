@@ -148,7 +148,7 @@ const config = {
       },
     },
     react: { version: "18" },
-    next: { rootDir: "apps/www" },
+    next: { rootDir: "apps/web" },
   },
   parserOptions: {
     tsconfigRootDir: path.resolve(__dirname),

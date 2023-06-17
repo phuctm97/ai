@@ -3,6 +3,7 @@
 next-env.d.ts
 out
 out-for-mobile
+apps/mobile/ios
 
 # scripts
 .*.js

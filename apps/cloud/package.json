@@ -1,5 +1,5 @@
 {
-  "name": "aws",
+  "name": "cloud",
   "private": true,
   "dependencies": {
     "@aws-cdk/aws-apigatewayv2-alpha": "2.84.0-alpha.0",
@@ -7,7 +7,7 @@
     "@aws-cdk/aws-cognito-identitypool-alpha": "2.84.0-alpha.0",
     "aws-cdk-lib": "^2.84.0",
     "constructs": "^10.2.52",
-    "dotenv": "^16.2.0",
+    "dotenv": "^16.3.0",
     "pascal-case": "^3.1.2"
   },
   "devDependencies": {
