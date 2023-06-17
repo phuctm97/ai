@@ -8,6 +8,9 @@ import { authedAtom, authorizationHeaderAtom, SignIn } from "~/auth";
 
 function asChatOptions(authorizationHeader: string): UseChatOptions {
   return {
+    api: process.env.NEXT_PUBLIC_FOR_MOBILE
+      ? "https://ai.phuctm97.com/api/chat"
+      : "/api/chat",
     headers: { authorization: authorizationHeader },
   };
 }
@@ -23,11 +26,12 @@ const chatOptionsAtom = atom<UseChatOptions | Promise<UseChatOptions>>(
 
 const Chat: FC = () => {
   const chatOptions = useAtomValue(chatOptionsAtom);
-  const { messages, input, handleInputChange, handleSubmit } =
+  const { error, messages, input, handleInputChange, handleSubmit } =
     useChat(chatOptions);
   return (
     <>
       <main className="container mx-auto flex max-w-md flex-col items-stretch justify-start space-y-4 px-4 py-10">
+        {error && <p className="text-red-600">{error.message}</p>}
         {messages.map((message) => (
           <div className="whitespace-pre-wrap" key={message.id}>
             {message.role === "user" ? "User: " : "AI: "}

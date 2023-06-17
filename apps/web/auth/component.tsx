@@ -34,7 +34,7 @@ const CompleteNewPassword: FC<CompleteNewPasswordProps> = ({
   );
   return (
     <form
-      className="flex flex-col items-start justify-start"
+      className="container mx-auto flex max-w-md flex-col items-stretch justify-start px-4 py-10"
       onSubmit={handleSubmit}
     >
       <input
@@ -77,7 +77,7 @@ export const SignIn: FC = () => {
     }
   return (
     <form
-      className="flex flex-col items-start justify-start"
+      className="container mx-auto flex max-w-md flex-col items-stretch justify-start px-4 py-10"
       onSubmit={handleSubmit}
     >
       <input

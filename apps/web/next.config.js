@@ -2,7 +2,7 @@
 const config = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  ...(process.env.NEXT_TARGET === "mobile"
+  ...(process.env.NEXT_PUBLIC_FOR_MOBILE
     ? {
         output: "export",
         distDir: "out-for-mobile",

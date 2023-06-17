@@ -6,6 +6,16 @@ import { Configuration, OpenAIApi } from "openai-edge";
 
 export const runtime: ServerRuntime = "edge";
 
+const corsHeaders = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-headers": "*",
+  "access-control-allow-methods": "OPTIONS,POST",
+};
+
+export function OPTIONS(): Response {
+  return new Response(null, { headers: corsHeaders });
+}
+
 const authScheme = "Bearer ";
 
 const authIssuer = `https://cognito-idp.${process.env.NEXT_PUBLIC_REGION}.amazonaws.com/${process.env.NEXT_PUBLIC_USER_POOL_ID}`;
@@ -56,5 +66,5 @@ export async function POST(req: Request): Promise<Response> {
     messages,
   });
   const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return new StreamingTextResponse(stream, { headers: corsHeaders });
 }

@@ -2,7 +2,7 @@
   "name": "web",
   "private": true,
   "scripts": {
-    "build-for-mobile": "NEXT_TARGET=mobile next build"
+    "build-for-mobile": "NEXT_PUBLIC_FOR_MOBILE=1 next build"
   },
   "dependencies": {
     "@aws-amplify/analytics": "^6.2.0",
