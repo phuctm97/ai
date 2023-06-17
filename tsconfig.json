@@ -2,7 +2,6 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     "incremental": true,
-    "lib": ["dom", "dom.iterable", "es2023"],
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,

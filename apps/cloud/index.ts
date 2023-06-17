@@ -1,7 +1,8 @@
 import type { AppProps, StackProps } from "aws-cdk-lib";
 
-import { App, Stack } from "aws-cdk-lib";
+import { App, Duration, Stack } from "aws-cdk-lib";
 import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as customResources from "aws-cdk-lib/custom-resources";
 import * as dotenv from "dotenv";
@@ -31,6 +32,8 @@ class MyStack extends Stack {
       writeAttributes: new cognito.ClientAttributes().withStandardAttributes({
         fullname: true,
       }),
+      idTokenValidity: Duration.minutes(5),
+      accessTokenValidity: Duration.minutes(5),
     });
 
     const identityPool = new addons.cognito.IdentityPool(this, "IdentityPool", {
@@ -85,6 +88,14 @@ class MyStack extends Stack {
       }),
       installLatestAwsSdk: false,
     });
+
+    const assistantTable = new dynamodb.Table(this, "AssistantTable", {
+      partitionKey: { name: "userId", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "assistantId", type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+    });
+
+    assistantTable.grantReadWriteData(identityPool.authenticatedRole);
 
     addons.cfn.destroyOnRemoval(
       ...this.node.children.filter(

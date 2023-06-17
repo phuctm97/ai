@@ -2,6 +2,7 @@
   "name": "mobile",
   "private": true,
   "scripts": {
+    "ts-check": "tsc --noEmit",
     "build": "pnpm --filter web build-for-mobile && pnpm cap sync"
   },
   "dependencies": {

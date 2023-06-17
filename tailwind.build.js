@@ -31,9 +31,9 @@ const plugin = ({ addVariant, addBase }) => {
     addVariant(`d-${align}`, `&[data-align='${align}']`);
     addVariant(`group-d-${align}`, `.group[data-align='${align}'] &`);
   }
-  for (const value of ["placeholder"]) {
-    addVariant(`d-${value}`, `&[data-${value}]`);
-    addVariant(`group-d-${value}`, `.group[data-${value}] &`);
+  for (const attr of ["placeholder"]) {
+    addVariant(`d-${attr}`, `&[data-${attr}]`);
+    addVariant(`group-d-${attr}`, `.group[data-${attr}] &`);
   }
   addVariant("autofill", [
     "&:-webkit-autofill",

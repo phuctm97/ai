@@ -9,7 +9,7 @@ import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { pascalCase } from "pascal-case";
 import path from "path";
 
-export type FunctionType = "FUNCTION" | "HANDLER";
+export type FunctionType = "HANDLER" | "FUNCTION";
 
 export type FunctionProps = Pick<
   NodejsFunctionProps,

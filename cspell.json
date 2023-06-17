@@ -26,10 +26,12 @@
     "openapi",
     "phuctm",
     "presigner",
+    "refreshable",
     "roadmap",
     "scroller",
     "tailwindcss",
     "tsbuildinfo",
+    "unauthed",
     "unoptimized",
     "workdir"
   ]

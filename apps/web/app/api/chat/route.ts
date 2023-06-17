@@ -20,7 +20,7 @@ const authScheme = "Bearer ";
 
 const authIssuer = `https://cognito-idp.${process.env.NEXT_PUBLIC_REGION}.amazonaws.com/${process.env.NEXT_PUBLIC_USER_POOL_ID}`;
 
-const authClockTolerance = 60; // 1 minute (in seconds)
+const authClockTolerance = 0; // in seconds
 
 const authJwks = jose.createRemoteJWKSet(
   new URL(`${authIssuer}/.well-known/jwks.json`)
@@ -58,7 +58,7 @@ const openaiApi = new OpenAIApi(
 
 export async function POST(req: Request): Promise<Response> {
   const user = await auth(req);
-  if (!user) return new Response("Unauthorized", { status: 401 });
+  if (!user) return new Response(null, { status: 401, headers: corsHeaders });
   const { messages } = await req.json();
   const response = await openaiApi.createChatCompletion({
     stream: true,

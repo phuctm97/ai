@@ -18,8 +18,8 @@ const esCommands = [
 
 /** @type {import('lint-staged').Config} */
 const config = {
-  [`!${esPatterns}`]: defaultCommands,
   [esPatterns]: esCommands,
+  [`!${esPatterns}`]: defaultCommands,
 };
 
 module.exports = config;
