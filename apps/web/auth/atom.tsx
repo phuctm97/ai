@@ -4,16 +4,16 @@ import type { FC } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { Hub } from "@aws-amplify/core";
-import { atom, useAtomValue, useSetAtom } from "jotai";
-import { Suspense, useEffect } from "react";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { useEffect } from "react";
 
 import { isNotNilAtom, mustNotNilAtom, symbolUnset } from "~/misc";
 
-const userWritableAtom = atom<typeof symbolUnset | CognitoUser | undefined>(
+const userListenableAtom = atom<typeof symbolUnset | CognitoUser | undefined>(
   symbolUnset
 );
 
-userWritableAtom.onMount = (set) =>
+userListenableAtom.onMount = (set) =>
   Hub.listen("auth", (capsule) => {
     switch (capsule.payload.event) {
       case "signIn":
@@ -26,7 +26,7 @@ userWritableAtom.onMount = (set) =>
     }
   });
 
-export const errUnauthed = "The user is not authenticated";
+const errUnauthed = "The user is not authenticated";
 
 function userNullableCatch(err: unknown): undefined {
   if (err !== errUnauthed) throw err;
@@ -36,32 +36,14 @@ function userNullableCatch(err: unknown): undefined {
 const userNullableAtom = atom<
   CognitoUser | undefined | Promise<CognitoUser | undefined>
 >((get) => {
-  const userWritableValue = get(userWritableAtom);
-  if (userWritableValue !== symbolUnset) return userWritableValue;
+  const userListenableGet = get(userListenableAtom);
+  if (userListenableGet !== symbolUnset) return userListenableGet;
   return Auth.currentAuthenticatedUser().catch(userNullableCatch);
 });
 
-export const authedAtom = isNotNilAtom(userNullableAtom);
-
 export const userAtom = mustNotNilAtom(userNullableAtom);
 
-const sessionRefreshableAtom = atom(0);
-
-const refreshSessionAtom = atom(null, (get, set) =>
-  set(sessionRefreshableAtom, (sessionRefreshable) => sessionRefreshable + 1)
-);
-
-function sessionNullableCatch(err: unknown): undefined {
-  if (err !== errUnauthed) throw err;
-  return undefined;
-}
-
-const sessionNullableAtom = atom<
-  CognitoUserSession | undefined | Promise<CognitoUserSession | undefined>
->((get) => {
-  get(sessionRefreshableAtom);
-  return Auth.currentSession().catch(sessionNullableCatch);
-});
+const sessionNullableAtom = atom<CognitoUserSession | undefined>(undefined);
 
 export const sessionAtom = mustNotNilAtom(sessionNullableAtom);
 
@@ -76,30 +58,61 @@ export const authorizationHeaderAtom = atom<string | Promise<string>>((get) => {
   return asAuthorizationHeader(sessionGet);
 });
 
-const SessionWorker: FC = () => {
-  const user = useAtomValue(userAtom);
-  const session = useAtomValue(sessionAtom);
-  const refreshSession = useSetAtom(refreshSessionAtom);
+export const authedAtom = isNotNilAtom(userNullableAtom);
+
+interface UserWorkerProps {
+  user: CognitoUser;
+}
+
+const UserWorker: FC<UserWorkerProps> = ({ user }) => {
+  const [session, setSession] = useAtom(sessionNullableAtom);
   useEffect(() => {
-    const exp = Math.min(
+    let active = true;
+    Auth.currentSession()
+      .then((session) => {
+        if (active) setSession(session);
+      })
+      .catch((err) => {
+        if (active) console.error(err);
+      });
+    return () => {
+      active = false;
+      setSession(undefined);
+    };
+  }, [user, setSession]);
+  useEffect(() => {
+    if (!session) return;
+    let active = true;
+    const expiration = Math.min(
       session.getAccessToken().getExpiration(),
       session.getIdToken().getExpiration()
     );
     const timeout = window.setTimeout(() => {
-      user.refreshSession(session.getRefreshToken(), (err) => {
-        if (err) console.error(err);
-        else refreshSession();
-      });
-    }, (exp - 60) * 1000 - Date.now());
-    return () => window.clearTimeout(timeout);
-  }, [user, session, refreshSession]);
+      if (active)
+        user.refreshSession(session.getRefreshToken(), (err) => {
+          if (active)
+            if (err) console.error(err);
+            else
+              Auth.currentSession()
+                .then((session) => {
+                  if (active) setSession(session);
+                })
+                .catch((err) => {
+                  if (active) console.error(err);
+                });
+        });
+    }, (expiration - 60) * 1000 - Date.now());
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
+    };
+  }, [user, session, setSession]);
   return null;
 };
 
-const AuthWorker: FC = () => (
-  <Suspense>
-    <SessionWorker />
-  </Suspense>
-);
+const AuthWorker: FC = () => {
+  const user = useAtomValue(userAtom);
+  return <UserWorker user={user} />;
+};
 
 export default AuthWorker;

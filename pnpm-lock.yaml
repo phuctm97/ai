@@ -154,8 +154,8 @@ importers:
         specifier: ^4.14.4
         version: 4.14.4
       jotai:
-        specifier: ^2.2.0
-        version: 2.2.0(react@18.2.0)
+        specifier: ^2.2.1
+        version: 2.2.1(react@18.2.0)
       next:
         specifier: ^13.4.6
         version: 13.4.6(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
@@ -291,10 +291,10 @@ packages:
       - react-native
     dev: false
 
-  /@aws-cdk/asset-awscli-v1@2.2.194:
+  /@aws-cdk/asset-awscli-v1@2.2.195:
     resolution:
       {
-        integrity: sha512-6u6VZ/KoMQQeX5jK/aNMtZM0TM5SkaNBt8JFdlzGf2cDxddWpJYsvsN2ClFAmvgYg/HPl57vp9kxI57Af2CBIw==,
+        integrity: sha512-VcjFpC6zg+JWAvMALMFQDAyUgFVRVrxG5J8mniGvaW9BBLV9txR4jfnsiEFlm66Tg+lg9fZ/9kAbO8DFiVg32w==,
       }
     dev: false
 
@@ -6600,7 +6600,7 @@ packages:
     peerDependencies:
       constructs: ^10.0.0
     dependencies:
-      "@aws-cdk/asset-awscli-v1": 2.2.194
+      "@aws-cdk/asset-awscli-v1": 2.2.195
       "@aws-cdk/asset-kubectl-v20": 2.1.2
       "@aws-cdk/asset-node-proxy-agent-v5": 2.0.165
       constructs: 10.2.52
@@ -8335,7 +8335,7 @@ packages:
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.5)(eslint@8.43.0)
       eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-typescript@3.5.5)(eslint@8.43.0)
       get-tsconfig: 4.6.0
-      globby: 13.1.4
+      globby: 13.2.0
       is-core-module: 2.12.1
       is-glob: 4.0.3
       synckit: 0.8.5
@@ -9325,10 +9325,10 @@ packages:
       slash: 3.0.0
     dev: true
 
-  /globby@13.1.4:
+  /globby@13.2.0:
     resolution:
       {
-        integrity: sha512-iui/IiiW+QrJ1X1hKH5qwlMQyv34wJAYwH1vrf8b9kBA4sNiif3gKsMHa+BrdnOpEudWjpotfa7LrTzB1ERS/g==,
+        integrity: sha512-jWsQfayf13NvqKUIL3Ta+CIqMnvlaIDFveWE/dpOZ9+3AMEJozsxDvKA02zync9UuvOM8rOXzsD5GqKP4OnWPQ==,
       }
     engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
     dependencies:
@@ -10319,10 +10319,10 @@ packages:
       }
     dev: false
 
-  /jotai@2.2.0(react@18.2.0):
+  /jotai@2.2.1(react@18.2.0):
     resolution:
       {
-        integrity: sha512-2gsMVpoaBa6aPHLArNhphck4+n8unZ8xF4Ciqhb+Z+tjsvabn5QFisNFHBMWooMAAmmTNU5TcvBIP8/XAsZy8Q==,
+        integrity: sha512-Gz4tpbRQy9OiFgBwF9F7TieDn0UTE3C0IFSDuxHjOIvgn2tACH30UKz6p/wIlfoZROXSTCIxEvYEa7Y25WM+8g==,
       }
     engines: { node: ">=12.20.0" }
     peerDependencies:
