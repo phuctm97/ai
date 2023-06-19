@@ -31,7 +31,7 @@ export type DynamicLoader<P> = Promise<{
 
 const DynamicFallback: FC<DynamicOptionsLoadingProps> = () => null;
 
-export function dynamic<P>(
+export function dynamic<P extends JSX.IntrinsicAttributes>(
   loader: DynamicLoader<P>,
   FallbackComponent: FC<DynamicOptionsLoadingProps> = DynamicFallback
 ): FC<P> {
@@ -45,7 +45,6 @@ export function dynamic<P>(
       return <FallbackComponent />;
     return (
       <Suspense fallback={<FallbackComponent />}>
-        {/* @ts-expect-error Props always are JSX attributes */}
         <LoadableComponent {...props} />
       </Suspense>
     );

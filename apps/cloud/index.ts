@@ -78,7 +78,6 @@ class MyStack extends Stack {
           UseDefaults: false,
         },
       };
-
     new customResources.AwsCustomResource(this, "IdentityPoolPrincipalTags", {
       onCreate: setIdentityPoolPrincipalTagAttributeMap,
       onUpdate: setIdentityPoolPrincipalTagAttributeMap,
