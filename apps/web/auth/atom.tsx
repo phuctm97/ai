@@ -1,4 +1,5 @@
 import type { CognitoUser } from "@aws-amplify/auth";
+import type { ICredentials } from "@aws-amplify/core";
 import type { CognitoUserSession } from "amazon-cognito-identity-js";
 import type { FC } from "react";
 
@@ -47,6 +48,10 @@ const sessionNullableAtom = atom<CognitoUserSession | undefined>(undefined);
 
 export const sessionAtom = mustNotNilAtom(sessionNullableAtom);
 
+const credentialsNullableAtom = atom<ICredentials | undefined>(undefined);
+
+export const credentialsAtom = mustNotNilAtom(credentialsNullableAtom);
+
 function asAuthorizationHeader(session: CognitoUserSession): string {
   return `Bearer ${session.getAccessToken().getJwtToken()}`;
 }
@@ -66,6 +71,7 @@ interface UserWorkerProps {
 
 const UserWorker: FC<UserWorkerProps> = ({ user }) => {
   const [session, setSession] = useAtom(sessionNullableAtom);
+  const [credentials, setCredentials] = useAtom(credentialsNullableAtom);
   useEffect(() => {
     let active = true;
     Auth.currentSession()
@@ -75,11 +81,19 @@ const UserWorker: FC<UserWorkerProps> = ({ user }) => {
       .catch((err) => {
         if (active) console.error(err);
       });
+    Auth.currentCredentials()
+      .then((credentials) => {
+        if (active) setCredentials(credentials);
+      })
+      .catch((err) => {
+        if (active) console.error(err);
+      });
     return () => {
       active = false;
       setSession(undefined);
+      setCredentials(undefined);
     };
-  }, [user, setSession]);
+  }, [user, setSession, setCredentials]);
   useEffect(() => {
     if (!session) return;
     let active = true;
@@ -107,6 +121,24 @@ const UserWorker: FC<UserWorkerProps> = ({ user }) => {
       window.clearTimeout(timeout);
     };
   }, [user, session, setSession]);
+  useEffect(() => {
+    if (!credentials || !credentials.expiration) return;
+    let active = true;
+    const timeout = window.setTimeout(() => {
+      if (active)
+        Auth.currentCredentials()
+          .then((credentials) => {
+            if (active) setCredentials(credentials);
+          })
+          .catch((err) => {
+            if (active) console.error(err);
+          });
+    }, credentials.expiration.getTime());
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
+    };
+  }, [user, credentials, setCredentials]);
   return null;
 };
 
