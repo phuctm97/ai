@@ -5,42 +5,14 @@ import type { FC } from "react";
 
 import { Auth } from "@aws-amplify/auth";
 import { Hub } from "@aws-amplify/core";
-import { atom, useAtom, useAtomValue } from "jotai";
+import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 
-import { isNotNilAtom, mustNotNilAtom, symbolUnset } from "~/misc";
-
-const userListenableAtom = atom<typeof symbolUnset | CognitoUser | undefined>(
-  symbolUnset
-);
-
-userListenableAtom.onMount = (set) =>
-  Hub.listen("auth", (capsule) => {
-    switch (capsule.payload.event) {
-      case "signIn":
-      case "autoSignIn":
-        set(capsule.payload.data);
-        break;
-      case "signOut":
-        set(undefined);
-        break;
-    }
-  });
+import { isNotNil, mustNotNilAtom, promiseNever } from "~/misc";
 
 const errUnauthed = "The user is not authenticated";
 
-function userNullableCatch(err: unknown): undefined {
-  if (err !== errUnauthed) throw err;
-  return undefined;
-}
-
-const userNullableAtom = atom<
-  CognitoUser | undefined | Promise<CognitoUser | undefined>
->((get) => {
-  const userListenableGet = get(userListenableAtom);
-  if (userListenableGet !== symbolUnset) return userListenableGet;
-  return Auth.currentAuthenticatedUser().catch(userNullableCatch);
-});
+const userNullableAtom = atom<CognitoUser | null | undefined>(undefined);
 
 export const userAtom = mustNotNilAtom(userNullableAtom);
 
@@ -63,7 +35,11 @@ export const authorizationHeaderAtom = atom<string | Promise<string>>((get) => {
   return asAuthorizationHeader(sessionGet);
 });
 
-export const authedAtom = isNotNilAtom(userNullableAtom);
+export const authedAtom = atom<boolean | Promise<boolean>>((get) => {
+  const userNullableGet = get(userNullableAtom);
+  if (typeof userNullableGet === "undefined") return promiseNever;
+  return isNotNil(userNullableGet);
+});
 
 interface UserWorkerProps {
   user: CognitoUser;
@@ -143,8 +119,39 @@ const UserWorker: FC<UserWorkerProps> = ({ user }) => {
 };
 
 const AuthWorker: FC = () => {
-  const user = useAtomValue(userAtom);
-  return <UserWorker user={user} />;
+  const [user, setUser] = useAtom(userNullableAtom);
+  useEffect(() => {
+    let active = true;
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        if (active) setUser(user);
+      })
+      .catch((err) => {
+        if (active)
+          if (err === errUnauthed) setUser(null);
+          else console.error(err);
+      });
+    return () => {
+      active = false;
+      setUser(undefined);
+    };
+  }, [setUser]);
+  useEffect(
+    () =>
+      Hub.listen("auth", (capsule) => {
+        switch (capsule.payload.event) {
+          case "signIn":
+          case "autoSignIn":
+            setUser(capsule.payload.data);
+            break;
+          case "signOut":
+            setUser(null);
+            break;
+        }
+      }),
+    [setUser]
+  );
+  return user ? <UserWorker user={user} /> : null;
 };
 
 export default AuthWorker;
