@@ -140,7 +140,7 @@ importers:
         version: 3.354.0(@aws-sdk/client-dynamodb@3.354.0)(@aws-sdk/smithy-client@3.347.0)(@aws-sdk/types@3.347.0)
       ai:
         specifier: ^2.1.3
-        version: 2.1.3(react@18.2.0)(svelte@3.59.1)(vue@3.3.4)
+        version: 2.1.3(react@18.2.0)(svelte@3.59.2)(vue@3.3.4)
       aws-crt:
         specifier: ^1.15.18
         version: 1.15.18
@@ -294,10 +294,10 @@ packages:
       - react-native
     dev: false
 
-  /@aws-cdk/asset-awscli-v1@2.2.197:
+  /@aws-cdk/asset-awscli-v1@2.2.198:
     resolution:
       {
-        integrity: sha512-gUM22fkas3lxVG5v1WW0I2CsnTLj2v7gRm/31fnAGTYnzP60BsYVWa0Vi99b2Qz3D3RXxOlGKaO+dQR7r2GqIg==,
+        integrity: sha512-RfOMXFMyZ5Ca8ytB3/vs6srFH5HVV4M2JS9Wsb/uXPEpSblEmuf31iGVfN6Q+xRoNPm8icsquCRQ79JBqH4yjA==,
       }
     dev: false
 
@@ -3935,7 +3935,7 @@ packages:
       clone-deep: 4.0.1
       find-cache-dir: 2.1.0
       make-dir: 2.1.0
-      pirates: 4.0.5
+      pirates: 4.0.6
       source-map-support: 0.5.21
     dev: false
 
@@ -5019,7 +5019,7 @@ packages:
     engines: { node: ^14.15.0 || ^16.10.0 || >=18.0.0 }
     dependencies:
       "@jest/types": 29.5.0
-      "@sinonjs/fake-timers": 10.1.0
+      "@sinonjs/fake-timers": 10.3.0
       "@types/node": 18.16.18
       jest-message-util: 29.5.0
       jest-mock: 29.5.0
@@ -5374,7 +5374,7 @@ packages:
       "@react-native-community/cli-tools": 10.1.1(encoding@0.1.13)
       chalk: 4.1.2
       command-exists: 1.2.9
-      envinfo: 7.8.1
+      envinfo: 7.9.0
       execa: 1.0.0
       hermes-profile-transformer: 0.0.6
       ip: 1.1.8
@@ -5626,10 +5626,10 @@ packages:
       type-detect: 4.0.8
     dev: false
 
-  /@sinonjs/fake-timers@10.1.0:
+  /@sinonjs/fake-timers@10.3.0:
     resolution:
       {
-        integrity: sha512-w1qd368vtrwttm1PRJWPW1QHlbmHrVDGs1eBH/jZvRPUFS4MNXV9Q33EQdjOdeAxZ7O8+3wM7zxztm2nfUSyKw==,
+        integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==,
       }
     dependencies:
       "@sinonjs/commons": 3.0.0
@@ -6204,7 +6204,7 @@ packages:
       indent-string: 4.0.0
     dev: true
 
-  /ai@2.1.3(react@18.2.0)(svelte@3.59.1)(vue@3.3.4):
+  /ai@2.1.3(react@18.2.0)(svelte@3.59.2)(vue@3.3.4):
     resolution:
       {
         integrity: sha512-TwSSYf7YZdwTc9ZdV0qnvToesEePVvH0UlzYmLY44uOHkhNYYsPw5wh7Y+GwS/mHFBnPOm7NFDZbtFGGn+D0mQ==,
@@ -6225,8 +6225,8 @@ packages:
       eventsource-parser: 1.0.0
       nanoid: 3.3.6
       react: 18.2.0
-      sswr: 1.10.0(svelte@3.59.1)
-      svelte: 3.59.1
+      sswr: 1.10.0(svelte@3.59.2)
+      svelte: 3.59.2
       swr: 2.1.5(react@18.2.0)
       swrv: 1.0.3(vue@3.3.4)
       vue: 3.3.4
@@ -6657,7 +6657,7 @@ packages:
     peerDependencies:
       constructs: ^10.0.0
     dependencies:
-      "@aws-cdk/asset-awscli-v1": 2.2.197
+      "@aws-cdk/asset-awscli-v1": 2.2.198
       "@aws-cdk/asset-kubectl-v20": 2.1.2
       "@aws-cdk/asset-node-proxy-agent-v5": 2.0.165
       constructs: 10.2.55
@@ -7012,7 +7012,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001505
-      electron-to-chromium: 1.4.434
+      electron-to-chromium: 1.4.435
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
 
@@ -8316,10 +8316,10 @@ packages:
       }
     dev: false
 
-  /electron-to-chromium@1.4.434:
+  /electron-to-chromium@1.4.435:
     resolution:
       {
-        integrity: sha512-5Gvm09UZTQRaWrimRtWRO5rvaX6Kpk5WHAPKDa7A4Gj6NIPuJ8w8WNpnxCXdd+CJJt6RBU6tUw0KyULoW6XuHw==,
+        integrity: sha512-B0CBWVFhvoQCW/XtjRzgrmqcgVWg6RXOEM/dK59+wFV93BFGR6AeNKc4OyhM+T3IhJaOOG8o/V+33Y2mwJWtzw==,
       }
 
   /elementtree@0.1.7:
@@ -8389,10 +8389,10 @@ packages:
     engines: { node: ">=6" }
     dev: true
 
-  /envinfo@7.8.1:
+  /envinfo@7.9.0:
     resolution:
       {
-        integrity: sha512-/o+BXHmB7ocbHEAs6F2EnG0ogybVVUdkRunTT2glZU9XAaGmhqskrvKwqXuDfNjEO0LZKWdejEEpnq8aM0tOaw==,
+        integrity: sha512-RODB4txU+xImYDemN5DqaKC0CHk05XSVkOX4pq0hK26Qx+1LChkuOyUDlGEjYb3ACr0n9qBhFjg37hQuJvpkRQ==,
       }
     engines: { node: ">=4" }
     hasBin: true
@@ -12842,10 +12842,10 @@ packages:
     engines: { node: ">=6" }
     dev: false
 
-  /pirates@4.0.5:
+  /pirates@4.0.6:
     resolution:
       {
-        integrity: sha512-8V9+HQPupnaXMA23c5hvl69zXvTwTzyAYasnkb0Tts4XvO4CliqONMOnvlq26rkhLC3nWDFBJf73LU1e1VZLaQ==,
+        integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==,
       }
     engines: { node: ">= 6" }
 
@@ -14233,7 +14233,7 @@ packages:
       }
     dev: false
 
-  /sswr@1.10.0(svelte@3.59.1):
+  /sswr@1.10.0(svelte@3.59.2):
     resolution:
       {
         integrity: sha512-nLWAJSQy3h8t7rrbTXanRyVHuQPj4PwKIVGe4IMlxJFdhyaxnN/JGACnvQKGDeWiTGYIZIx/jRuUsPEF0867Pg==,
@@ -14241,7 +14241,7 @@ packages:
     peerDependencies:
       svelte: ^3.29.0
     dependencies:
-      svelte: 3.59.1
+      svelte: 3.59.2
       swrev: 3.0.0
     dev: false
 
@@ -14559,7 +14559,7 @@ packages:
       glob: 7.1.6
       lines-and-columns: 1.2.4
       mz: 2.7.0
-      pirates: 4.0.5
+      pirates: 4.0.6
       ts-interface-checker: 0.1.13
     dev: true
 
@@ -14605,10 +14605,10 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
-  /svelte@3.59.1:
+  /svelte@3.59.2:
     resolution:
       {
-        integrity: sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==,
+        integrity: sha512-vzSyuGr3eEoAtT/A6bmajosJZIUWySzY2CzB3w2pgPvnkUjGqlDnsNnA0PMO+mMAhuyMul6C2uuZzY6ELSkzyA==,
       }
     engines: { node: ">= 8" }
     dev: false

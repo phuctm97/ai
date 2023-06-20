@@ -7,7 +7,7 @@ import type { FC } from "react";
 import { atom, useAtomValue } from "jotai";
 import { loadable } from "jotai/utils";
 import nextDynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { lazy } from "react";
 
 async function dynamicRead(get: Getter): Promise<boolean> {
   if (typeof window !== "undefined") {
@@ -29,22 +29,20 @@ const DynamicFallback: FC<DynamicOptionsLoadingProps> = () => null;
 
 export function dynamic<P extends JSX.IntrinsicAttributes>(
   loader: DynamicLoader<P>,
-  FallbackComponent: FC<DynamicOptionsLoadingProps> = DynamicFallback
+  loading?: FC<DynamicOptionsLoadingProps>
 ): FC<P> {
-  const LoadableComponent = nextDynamic(() => loader, {
-    ssr: false,
-    loading: FallbackComponent as DynamicOptions<P>["loading"],
-  });
+  const LoadingComponent = (loading ?? DynamicFallback) as NonNullable<
+    DynamicOptions<P>["loading"]
+  >;
+  const LoadableComponent = (
+    loading
+      ? nextDynamic(() => loader, { loading: LoadingComponent })
+      : lazy(() => loader)
+  ) as FC<P>;
   const DynamicComponent: FC<P> = (props) => {
-    const [, setDynamicLazyLoad] = useState(false);
-    useEffect(() => {
-      const handleLazyLoad = (): void => setDynamicLazyLoad(true);
-      window.addEventListener("lazy-load", handleLazyLoad);
-      return () => window.removeEventListener("lazy-load", handleLazyLoad);
-    }, [setDynamicLazyLoad]);
     const dynamicLoadable = useAtomValue(dynamicLoadableAtom);
     if (dynamicLoadable.state !== "hasData" || !dynamicLoadable.data)
-      return <FallbackComponent />;
+      return <LoadingComponent />;
     return <LoadableComponent {...props} />;
   };
   return DynamicComponent;

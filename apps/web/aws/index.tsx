@@ -40,7 +40,7 @@ export const dynamoDBDocumentClientAtom = atom<
   return asDynamoDBDocumentClient(dynamoDBClientGet);
 });
 
-const DynamoDBClientWorker: FC = () => {
+const DynamoDBDocumentClientWorker: FC = () => {
   const dynamoDBDocumentClient = useAtomValue(dynamoDBDocumentClientAtom);
   useEffect(
     () => () => dynamoDBDocumentClient.destroy(),
@@ -49,14 +49,20 @@ const DynamoDBClientWorker: FC = () => {
   return null;
 };
 
-const AwsWorker: FC = () => {
+const DynamoDBClientWorker: FC = () => {
   const dynamoDBClient = useAtomValue(dynamoDBClientAtom);
   useEffect(() => () => dynamoDBClient.destroy(), [dynamoDBClient]);
   return (
     <Suspense>
-      <DynamoDBClientWorker />
+      <DynamoDBDocumentClientWorker />
     </Suspense>
   );
 };
+
+const AwsWorker: FC = () => (
+  <Suspense>
+    <DynamoDBClientWorker />
+  </Suspense>
+);
 
 export default AwsWorker;
